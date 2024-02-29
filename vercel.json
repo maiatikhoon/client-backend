@@ -5,10 +5,10 @@
   "routes": [{ "src": "/(.*)", "dest": "/server.js" }],
   "functions": {
     "registerUser": {
-      "maxDuration": 60
+      "maxDuration": 30
     },
     "loginUser": {
-      "maxDuration": 60
+      "maxDuration": 30
     }
   }
 }
