@@ -77,7 +77,7 @@ const createClient = async (req, res) => {
       let errorMessage = error.details[0].message;
       errorMessage = errorMessage.replace(/"/g, "");
       console.log(errorMessage);
-      res.status(400).json({ error: errorMessage });
+      return res.status(400).json({ error: errorMessage });
     }
 
     const user = await MyClient.findOne({ email: email }).maxTimeMS(30000);
