@@ -20,8 +20,10 @@ async function main() {
 }
 
 const userRoutes = require("./routes/userRoutes");
+const clientRoutes = require("./routes/clientRoutes");
 
 app.use("/api/user", userRoutes);
+app.use("/api/client", clientRoutes);
 
 app.listen(port, () => {
   console.log(`server is listening on port ${port}`);

@@ -8,6 +8,8 @@ const registerUser = async (req, res) => {
   try {
     const { username, email, password, cnf_password } = req.body;
 
+    // console.log(req.url) ;
+
     const data = { username, email, password };
 
     const { error } = validateRegisterInput(data);
