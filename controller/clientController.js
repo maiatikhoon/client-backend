@@ -236,9 +236,23 @@ const validateClientInput = (data) => {
       .messages({
         "string.email": "enter a valid email address",
       }),
-    contact: Joi.number().required(),
+    contact: Joi.string()
+      .length(10)
+      .pattern(/^[0-9]+$/)
+      .messages({
+        "string.length": "Contact number should contain 10 digits",
+      })
+      .required(),
 
-    landline_number: Joi.number().required(),
+    landline_number: Joi.string()
+      .min(11)
+      .max(15)
+      .pattern(/^\d+$/)
+      .required()
+      .messages({
+        "string.min": "Landline number must have at least {#limit} digits",
+        "string.max": "Landline number must have at most {#limit} digits",
+      }),
     website_link: Joi.string(),
     address: Joi.string().required().max(100).messages({
       "string.max": "address should of maximum 100 characters",
@@ -272,9 +286,24 @@ const validateUpdateClientInput = (data) => {
         "string.email": "enter a valid email address",
       }),
 
-    contact: Joi.number().allow(""),
+    contact: Joi.string()
+      .length(10)
+      .pattern(/^[0-9]+$/)
+      .messages({
+        "string.length": "Contact number should contain 10 digits",
+      })
+      .allow(""),
 
-    landline_number: Joi.number().allow(""),
+    landline_number: Joi.string()
+      .min(11)
+      .max(15)
+      .pattern(/^\d+$/)
+      .required()
+      .messages({
+        "string.min": "Landline number must have at least {#limit} digits",
+        "string.max": "Landline number must have at most {#limit} digits",
+      })
+      .allow(""),
     website_link: Joi.string().allow(""),
     address: Joi.string().max(100).messages({
       "string.max": "address should be of maximum 100 characters",

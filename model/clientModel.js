@@ -6,11 +6,11 @@ const subSchema = new mongoose.Schema({
 });
 
 const clientSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true, unique: false },
   code: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  contact: { type: Number, required: true, unique: true },
-  landline_number: { type: Number },
+  contact: { type: String, required: true, unique: true },
+  landline_number: { type: String },
   website_link: { type: String },
   address: { type: String, required: true },
   state: { type: String, required: true },
