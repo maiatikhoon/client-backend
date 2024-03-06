@@ -11,13 +11,18 @@ const getAllClient = async (req, res) => {
 
     const response = await Promise.all(
       data.map(async (client) => {
-        const url = await getObjectUrl(client.logo[0].imageKey);
-        const newData = {
-          ...JSON.parse(JSON.stringify(client)),
-          url: url,
-        };
+        let newData = {};
+        if (client.logo.length > 0) {
+          const url = await getObjectUrl(client.logo[0].imageKey);
+          newData = {
+            ...JSON.parse(JSON.stringify(client)),
+            url: url,
+          };
+          // return newData;
+        }
 
-        return newData;
+        const myData = { ...JSON.parse(JSON.stringify(client)) };
+        return { ...newData, ...myData };
       })
     );
     return res.status(200).json({ data: response });
