@@ -58,7 +58,7 @@ const createClient = async (req, res) => {
     console.log(logo);
     const logoArr = [];
 
-    if (logo) {
+    if (logo !== undefined) {
       const [clientLogo] = logo;
 
       async function uploadClientLogo() {
@@ -156,7 +156,7 @@ const updateClient = async (req, res) => {
     const { logo } = req.files;
     const logoArr = [];
 
-    if (logo) {
+    if (logo !== undefined) {
       const [clientLogo] = logo;
 
       async function uploadClientLogo() {
