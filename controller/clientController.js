@@ -51,24 +51,26 @@ const createClient = async (req, res) => {
 
     console.log("before logo");
     console.log(logo);
-
-    const [clientLogo] = logo;
-
     const logoArr = [];
-    async function uploadClientLogo() {
-      const s3Response = await uploadObject(
-        `logo/${Date.now()}`,
-        clientLogo.buffer,
-        clientLogo.mimetype
-      );
 
-      logoArr.push({
-        imageName: clientLogo.originalname,
-        imageKey: s3Response["key"],
-      });
+    if (logo) {
+      const [clientLogo] = logo;
+
+      async function uploadClientLogo() {
+        const s3Response = await uploadObject(
+          `logo/${Date.now()}`,
+          clientLogo.buffer,
+          clientLogo.mimetype
+        );
+
+        logoArr.push({
+          imageName: clientLogo.originalname,
+          imageKey: s3Response["key"],
+        });
+      }
+
+      await uploadClientLogo();
     }
-
-    await uploadClientLogo();
 
     console.log("logoArr", logoArr);
 
@@ -220,6 +222,12 @@ const deleteClient = async (req, res) => {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
+};
+
+const paginate = async (req, res) => {
+  let page = req.query.page ? +req.query.page : 1;
+
+  const data = await MyClient.find();
 };
 
 const validateClientInput = (data) => {
