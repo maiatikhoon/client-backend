@@ -233,7 +233,11 @@ const deleteClient = async (req, res) => {
 };
 
 const paginate = async (req, res) => {
-  let page = req.query.page ? +req.query.page : 1;
+  const pageNo = req.query.pageNo ? parseInt(req.query.pageNo) : 1;
+
+  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+
+  const skip = (pageNo - 1) * limit;
 
   const data = await MyClient.find();
 };
@@ -278,7 +282,7 @@ const validateClientInput = (data) => {
     city: Joi.string(),
     pincode: Joi.number().required(),
     organisation_type: Joi.string().required(),
-    userid: Joi.string().required(),
+    userid: Joi.string(),
   });
 
   return schema.validate(data);
