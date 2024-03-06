@@ -149,24 +149,27 @@ const updateClient = async (req, res) => {
     }
 
     const { logo } = req.files;
-    const [clientLogo] = logo;
-
-    console.log("clietLogo", clientLogo);
     const logoArr = [];
-    async function uploadClientLogo() {
-      const s3Response = await uploadObject(
-        `logo/${Date.now()}`,
-        clientLogo.buffer,
-        clientLogo.mimetype
-      );
 
-      logoArr.push({
-        imageName: clientLogo.originalname,
-        imageKey: s3Response["key"],
-      });
+    if (logo) {
+      const [clientLogo] = logo;
+
+      async function uploadClientLogo() {
+        const s3Response = await uploadObject(
+          `logo/${Date.now()}`,
+          clientLogo.buffer,
+          clientLogo.mimetype
+        );
+
+        logoArr.push({
+          imageName: clientLogo.originalname,
+          imageKey: s3Response["key"],
+        });
+      }
+
+      await uploadClientLogo();
     }
 
-    await uploadClientLogo();
     console.log("logoArr", logoArr);
 
     const user = await MyClient.findOne({ code: clientCode });
