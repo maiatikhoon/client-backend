@@ -24,7 +24,7 @@ const clientSchema = new mongoose.Schema({
 
   logo: [subSchema],
 
-  userid: { type: String, required: true },
+  userid: { type: String },
 });
 
 const MyClient = mongoose.model("MyClient", clientSchema);
