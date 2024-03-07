@@ -1,10 +1,13 @@
 const Joi = require("joi");
 const { getObjectUrl, uploadObject } = require("../utils/s3Bucket");
 const MyClient = require("../model/clientModel");
+const { paginate } = require("../utils/Paginate");
 
 const getAllClient = async (req, res) => {
   try {
-    const data = await MyClient.find({});
+    const { limit, skip } = await paginate(req);
+
+    const data = await MyClient.find({}).skip(skip).limit(limit);
     if (data.length < 0) {
       return res.status(400).json({ messaage: "No Client Found" });
     }
@@ -58,7 +61,7 @@ const createClient = async (req, res) => {
     console.log(logo);
     const logoArr = [];
 
-    if (logo !== undefined) {
+    if (logo) {
       const [clientLogo] = logo;
 
       async function uploadClientLogo() {
@@ -156,7 +159,7 @@ const updateClient = async (req, res) => {
     const { logo } = req.files;
     const logoArr = [];
 
-    if (logo !== undefined) {
+    if (logo) {
       const [clientLogo] = logo;
 
       async function uploadClientLogo() {
@@ -230,16 +233,6 @@ const deleteClient = async (req, res) => {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
-};
-
-const paginate = async (req, res) => {
-  const pageNo = req.query.pageNo ? parseInt(req.query.pageNo) : 1;
-
-  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
-
-  const skip = (pageNo - 1) * limit;
-
-  const data = await MyClient.find();
 };
 
 const validateClientInput = (data) => {
