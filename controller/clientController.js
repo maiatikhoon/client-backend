@@ -203,6 +203,8 @@ const updateClient = async (req, res) => {
     const { logo } = req.files;
     const logoArr = [];
 
+    console.log(">>>>>>>>");
+    console.log("logo", logo);
     if (logo) {
       const [clientLogo] = logo;
 
@@ -371,6 +373,7 @@ const validateUpdateClientInput = (data) => {
     pincode: Joi.number(),
     organisation_type: Joi.string(),
     userid: Joi.string().allow(""),
+    logo: Joi.string().allow(""),
   });
 
   return schema.validate(data);
