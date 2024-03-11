@@ -1,4 +1,4 @@
-const getFilter = (req, res) => {
+const getFilter = (req, arr) => {
   const searchString = req.query.search;
 
   //   console.log(searchString);

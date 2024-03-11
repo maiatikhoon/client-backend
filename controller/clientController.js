@@ -173,7 +173,7 @@ const createClient = async (req, res) => {
 };
 
 const updateClient = async (req, res) => {
-  const clientCode = req.params.code;
+  const id = req.params.id;
 
   try {
     const {
@@ -224,7 +224,7 @@ const updateClient = async (req, res) => {
 
     console.log("logoArr", logoArr);
 
-    const user = await MyClient.findOne({ code: clientCode });
+    const user = await MyClient.findOne({ _id: id });
     console.log(user);
 
     const updatedData = {
@@ -246,8 +246,8 @@ const updateClient = async (req, res) => {
     };
 
     if (user) {
-      const updatedClient = await MyClient.findOneAndUpdate(
-        { code: clientCode },
+      const updatedClient = await MyClient.findByIdAndUpdate(
+        { _id: id },
         updatedData,
         { new: true }
       );

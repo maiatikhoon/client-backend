@@ -39,7 +39,7 @@ router.get("/:id", clientAuth, getClientById);
 
 router.post("/addclient", clientAuth, cpUpload, createClient);
 
-router.put("/updateclient/:code", clientAuth, cpUpload, updateClient);
+router.put("/updateclient/:id", clientAuth, cpUpload, updateClient);
 
 router.delete("/delete/:code", clientAuth, deleteClient);
 
