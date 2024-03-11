@@ -7,7 +7,8 @@ const getAllClient = async (req, res) => {
   try {
     const { limit, skip } = await paginate(req);
 
-    const data = await MyClient.find({}).skip(skip).limit(limit);
+    const data1 = await MyClient.find({}).skip(skip).limit(limit);
+    const data = data1.reverse();
     if (data.length < 0) {
       return res.status(400).json({ messaage: "No Client Found" });
     }
@@ -50,6 +51,7 @@ const getClientById = async (req, res) => {
     return res.status(500).json({ error: "client not found" });
   }
 };
+
 const createClient = async (req, res) => {
   try {
     const {
