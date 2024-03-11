@@ -2,34 +2,61 @@ const Joi = require("joi");
 const { getObjectUrl, uploadObject } = require("../utils/s3Bucket");
 const MyClient = require("../model/clientModel");
 const { paginate } = require("../utils/Paginate");
+const { getFilter } = require("../utils/getFilter");
 
 const getAllClient = async (req, res) => {
   try {
     const { limit, skip } = await paginate(req);
 
-    const data1 = await MyClient.find({}).skip(skip).limit(limit);
-    const data = data1.reverse();
-    if (data.length < 0) {
-      return res.status(400).json({ messaage: "No Client Found" });
-    }
+    const { searchString } = await getFilter(req);
 
-    const response = await Promise.all(
-      data.map(async (client) => {
-        let newData = {};
-        if (client.logo.length > 0) {
-          const url = await getObjectUrl(client.logo[0].imageKey);
-          newData = {
-            ...JSON.parse(JSON.stringify(client)),
-            url: url,
-          };
-          // return newData;
-        }
+    // console.log("searchString", searchString);
 
-        const myData = { ...JSON.parse(JSON.stringify(client)) };
-        return { ...newData, ...myData };
+    if (searchString) {
+      const data = await MyClient.find({
+        $or: [
+          { name: { $regex: searchString, $options: "i" } },
+          { code: { $regex: searchString, $options: "i" } },
+          { email: { $regex: searchString, $options: "i" } },
+          { website_link: { $regex: searchString, $options: "i" } },
+          { address: { $regex: searchString, $options: "i" } },
+          { state: { $regex: searchString, $options: "i" } },
+          { pincode: { $regex: searchString, $options: "i" } },
+          { organisation_type: { $regex: searchString, $options: "i" } },
+        ],
       })
-    );
-    return res.status(200).json({ data: response });
+        .skip(skip)
+        .limit(limit);
+
+      if (data.length > 0) {
+        return res.status(200).json({ data: data });
+      }
+      return res.status(400).json({ data: data });
+    } else {
+      const data1 = await MyClient.find({}).skip(skip).limit(limit);
+      const data = data1.reverse();
+      if (data.length < 0) {
+        return res.status(400).json({ messaage: "No Client Found" });
+      }
+
+      const response = await Promise.all(
+        data.map(async (client) => {
+          let newData = {};
+          if (client.logo.length > 0) {
+            const url = await getObjectUrl(client.logo[0].imageKey);
+            newData = {
+              ...JSON.parse(JSON.stringify(client)),
+              url: url,
+            };
+            // return newData;
+          }
+
+          const myData = { ...JSON.parse(JSON.stringify(client)) };
+          return { ...newData, ...myData };
+        })
+      );
+      return res.status(200).json({ data: response });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
