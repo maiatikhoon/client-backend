@@ -9,6 +9,7 @@ const {
   createClient,
   updateClient,
   deleteClient,
+  getClientById,
 } = require("../controller/clientController");
 
 const { clientAuth } = require("../middleware/clientAuth");
@@ -33,6 +34,8 @@ const cpUpload = upload.fields([
 ]);
 
 router.get("/", clientAuth, getAllClient);
+
+router.get("/:id", clientAuth, getClientById);
 
 router.post("/addclient", clientAuth, cpUpload, createClient);
 

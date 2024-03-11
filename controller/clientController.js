@@ -35,6 +35,21 @@ const getAllClient = async (req, res) => {
   }
 };
 
+const getClientById = async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const client = await MyClient.findOne({ _id: _id });
+
+    if (client) {
+      return res.status(200).json({ data: client });
+    } else {
+      return res.status(400).json({ error: "client not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "client not found" });
+  }
+};
 const createClient = async (req, res) => {
   try {
     const {
@@ -331,4 +346,10 @@ const validateUpdateClientInput = (data) => {
 
   return schema.validate(data);
 };
-module.exports = { getAllClient, createClient, updateClient, deleteClient };
+module.exports = {
+  getAllClient,
+  createClient,
+  updateClient,
+  deleteClient,
+  getClientById,
+};
