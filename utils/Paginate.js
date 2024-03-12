@@ -11,7 +11,7 @@ const paginate = async (req, res) => {
 
   const data = { pageNo: pageNo, limit: limit, skip: skip };
 
-  return { limit: limit, skip: skip };
+  return data;
 };
 
 module.exports = { paginate };

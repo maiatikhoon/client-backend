@@ -6,30 +6,34 @@ const { getFilter } = require("../utils/getFilter");
 
 const getAllClient = async (req, res) => {
   try {
-    const { limit, skip } = await paginate(req);
+    const { pageNo, limit, skip } = await paginate(req);
 
-    const { searchString } = await getFilter(req);
+    const search = req.query.search;
 
-    // console.log("searchString", searchString);
+    const options = [
+      "name",
+      "code",
+      "email",
+      "website_link",
+      "address",
+      "state",
+      "pincode",
+      "organisation_type",
+    ];
 
-    if (searchString) {
+    const filter = await getFilter(req, options);
+
+    if (search) {
       const data = await MyClient.find({
-        $or: [
-          { name: { $regex: searchString, $options: "i" } },
-          { code: { $regex: searchString, $options: "i" } },
-          { email: { $regex: searchString, $options: "i" } },
-          { website_link: { $regex: searchString, $options: "i" } },
-          { address: { $regex: searchString, $options: "i" } },
-          { state: { $regex: searchString, $options: "i" } },
-          { pincode: { $regex: searchString, $options: "i" } },
-          { organisation_type: { $regex: searchString, $options: "i" } },
-        ],
+        $or: filter,
       })
         .skip(skip)
         .limit(limit);
 
       if (data.length > 0) {
-        return res.status(200).json({ data: data });
+        return res
+          .status(200)
+          .json({ data: data, page: pageNo, totalCounts: data.length });
       }
       return res.status(400).json({ data: data });
     } else {
