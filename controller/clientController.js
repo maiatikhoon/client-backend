@@ -272,10 +272,10 @@ const updateClient = async (req, res) => {
 };
 
 const deleteClient = async (req, res) => {
-  const code = req.params.code;
+  const id = req.params.id;
 
   try {
-    const result = await MyClient.findOneAndDelete({ code });
+    const result = await MyClient.findByIdAndDelete({ _id: id });
 
     console.log(result);
     return res.status(200).json({ message: "document deleted !" });

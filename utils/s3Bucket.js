@@ -5,12 +5,13 @@ const {
 } = require("@aws-sdk/client-s3");
 
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+require("dotenv").config();
 
 const s3Client = new S3Client({
   region: "ap-south-1",
   credentials: {
-    accessKeyId: "AKIA47CRUQV56EVGDBN6",
-    secretAccessKey: "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",
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
   },
 });
 
