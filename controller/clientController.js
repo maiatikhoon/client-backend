@@ -35,7 +35,7 @@ const getAllClient = async (req, res) => {
           .status(200)
           .json({ data: data, page: pageNo, totalCounts: data.length });
       }
-      return res.status(400).json({ data: data });
+      return res.status(200).json({ data: data });
     } else {
       const data1 = await MyClient.find({}).skip(skip).limit(limit);
       const data = data1.reverse();
