@@ -4,7 +4,7 @@ const MyClient = require("../model/clientModel");
 const { paginate } = require("../utils/Paginate");
 const { getFilter } = require("../utils/getFilter");
 
-const getAllClient = async (req, res) => {
+module.exports.getAllClient = async (req, res) => {
   try {
     const { pageNo, limit, skip } = await paginate(req);
 
@@ -67,7 +67,7 @@ const getAllClient = async (req, res) => {
   }
 };
 
-const getClientById = async (req, res) => {
+module.exports.getClientById = async (req, res) => {
   const _id = req.params.id;
 
   try {
@@ -83,7 +83,7 @@ const getClientById = async (req, res) => {
   }
 };
 
-const createClient = async (req, res) => {
+module.exports.createClient = async (req, res) => {
   try {
     const {
       name,
@@ -176,7 +176,7 @@ const createClient = async (req, res) => {
   }
 };
 
-const updateClient = async (req, res) => {
+module.exports.updateClient = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -271,7 +271,7 @@ const updateClient = async (req, res) => {
   }
 };
 
-const deleteClient = async (req, res) => {
+module.exports.deleteClient = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -381,11 +381,4 @@ const validateUpdateClientInput = (data) => {
   });
 
   return schema.validate(data);
-};
-module.exports = {
-  getAllClient,
-  createClient,
-  updateClient,
-  deleteClient,
-  getClientById,
 };
