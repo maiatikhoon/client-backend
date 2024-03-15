@@ -98,6 +98,7 @@ module.exports.createClient = async (req, res) => {
       pincode,
       organisation_type,
       userid,
+      status,
     } = req.body;
 
     console.log("body ", req.body);
@@ -160,6 +161,7 @@ module.exports.createClient = async (req, res) => {
         organisation_type,
         userid,
         logo: logoArr,
+        status: status ? status : false,
       });
 
       const savedUser = await newClient.save();
@@ -285,6 +287,35 @@ module.exports.deleteClient = async (req, res) => {
   }
 };
 
+module.exports.changeStatusClient = async (req, res) => {
+  const { pageNo, limit, skip } = await paginate(req);
+
+  const id = req.params.id;
+
+  console.log("id", id);
+
+  if (id) {
+    const user = await MyClient.findById(id);
+    const updatedClient = await MyClient.findByIdAndUpdate(
+      { _id: id },
+      { $set: { status: !user.status } },
+      { new: true }
+    );
+    if (updatedClient) {
+      const data1 = await MyClient.find({}).skip(skip).limit(limit);
+      const allclients = data1.reverse();
+
+      console.log(">>>>>>>>>>");
+      return res.status(200).json({
+        data: allclients,
+        message: "client profile updated successfully",
+      });
+    } else {
+      return res.status(400).json({ error: "client not found!" });
+    }
+  }
+};
+
 const validateClientInput = (data) => {
   const schema = Joi.object({
     name: Joi.string().required().min(3).max(20).messages({
@@ -326,6 +357,7 @@ const validateClientInput = (data) => {
     pincode: Joi.number().required(),
     organisation_type: Joi.string().required(),
     userid: Joi.string(),
+    status: Joi.boolean(),
   });
 
   return schema.validate(data);

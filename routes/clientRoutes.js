@@ -10,6 +10,7 @@ const {
   updateClient,
   deleteClient,
   getClientById,
+  changeStatusClient,
 } = require("../controller/clientController");
 
 const { clientAuth } = require("../middleware/clientAuth");
@@ -34,6 +35,7 @@ const cpUpload = upload.fields([
 ]);
 
 router.get("/", clientAuth, getAllClient);
+router.get("/:id", clientAuth, changeStatusClient);
 
 router.get("/:id", clientAuth, getClientById);
 

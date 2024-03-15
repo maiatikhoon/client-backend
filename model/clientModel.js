@@ -22,6 +22,8 @@ const clientSchema = new mongoose.Schema({
     enum: ["Private", "Government", "Others"],
   },
 
+  status: Boolean,
+
   logo: [subSchema],
 
   userid: { type: String },
